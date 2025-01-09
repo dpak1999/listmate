@@ -1,15 +1,32 @@
 import { BodyScrollView } from "@/components/ui/body-scroll-view";
 import { Button } from "@/components/ui/button";
 import { TextInput } from "@/components/ui/text-input";
+import { backgroundColors, emojies } from "@/constants/Colors";
+import { useListCreation } from "@/context/ListCreationContext";
 import { Link, Stack } from "expo-router";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function CreateListScreen() {
   const [listName, setListName] = useState("");
   const [listDescription, setListDescription] = useState("");
 
+  const { selectedEmoji, selectedColor, setSelectedColor, setSelectedEmoji } =
+    useListCreation();
+
   const handleCreateList = () => {};
+
+  useEffect(() => {
+    setSelectedEmoji(emojies[Math.floor(Math.random() * emojies.length)]);
+    setSelectedColor(
+      backgroundColors[Math.floor(Math.random() * backgroundColors.length)]
+    );
+
+    return () => {
+      setSelectedColor("");
+      setSelectedEmoji("");
+    };
+  }, []);
 
   return (
     <Fragment>
@@ -36,17 +53,17 @@ export default function CreateListScreen() {
           />
 
           <Link
-            href={{ pathname: "/" }}
-            style={[styles.emojiButton, { borderColor: "blue" }]}
+            href={{ pathname: "/emoji-picker" }}
+            style={[styles.emojiButton, { borderColor: selectedColor }]}
           >
             <View style={styles.emojiContainer}>
-              <Text>{"🚀"}</Text>
+              <Text>{selectedEmoji}</Text>
             </View>
           </Link>
 
           <Link
-            href={{ pathname: "/" }}
-            style={[styles.colorButton, { borderColor: "blue" }]}
+            href={{ pathname: "/color-picker" }}
+            style={[styles.colorButton, { borderColor: selectedColor }]}
           >
             <View style={styles.colorContainer}>
               <View
@@ -54,7 +71,7 @@ export default function CreateListScreen() {
                   width: 24,
                   height: 24,
                   borderRadius: 100,
-                  backgroundColor: "blue",
+                  backgroundColor: selectedColor,
                 }}
               />
             </View>
