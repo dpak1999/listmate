@@ -13,7 +13,22 @@ export default function AuthRoutesLayout() {
   }
 
   return (
-    <Stack>
+    <Stack
+      screenOptions={{
+        ...(process.env.EXPO_OS !== "ios"
+          ? {}
+          : {
+              headerLargeTitle: true,
+              headerTransparent: true,
+              headerBlurEffect: "systemChromeMaterial",
+              headerLargeTitleShadowVisible: false,
+              headerShadowVisible: true,
+              headerLargeStyle: {
+                backgroundColor: "transparent",
+              },
+            }),
+      }}
+    >
       <Stack.Screen name="index" options={{ headerTitle: "Sign In" }} />
       <Stack.Screen name="sign-up" options={{ headerTitle: "Sign Up" }} />
       <Stack.Screen
